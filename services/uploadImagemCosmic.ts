@@ -27,6 +27,12 @@ const uploadImagemCosmic = async (req : any) => {
             originalname: req.file.originalname,
             buffer: req.file.buffer  
         };
+        if(!req?.file?.originalname.includes('.png') &&
+            !req?.file?.originalname.includes('.jpg') &&
+            !req?.file?.originalname.includes('.jpeg')){
+                throw new Error("Extensão da imagem invalida");
+        }
+
         if(req.url && req.url.includes('publicacao')){
             return await bucketPublicacoes.addMedia({media : media_object});
         }else{
