@@ -38,7 +38,7 @@ const handler = nc()
             return res.status(200).json({msg : 'publicação Enviada'});  
         }catch(e){
             console.log(e);
-            return res.status(400).json({error : 'errooooo'});
+            return res.status(400).json({error : 'erro'});
         }
         
 });
