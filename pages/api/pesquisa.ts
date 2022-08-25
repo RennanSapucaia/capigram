@@ -8,12 +8,12 @@ import { UsuarioModel } from '../../models/UsuarioModel';
 const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse<RespostaPadraoMsg | any[]>) => {
     try {
         if(req?.query?.id){
-            const usuariosEncontrados = await UsuarioModel.findById(req?.query?.id);
-            if(!usuariosEncontrados){
+            const usuarioEncontrado = await UsuarioModel.findById(req?.query?.id);
+            if(!usuarioEncontrado){
                 return res.status(405).json({error : 'Usuario não encontrado'});
             }
-            usuariosEncontrados.senha = null;
-            return res.status(200).json(usuariosEncontrados);
+            usuarioEncontrado.senha = null;
+            return res.status(200).json(usuarioEncontrado);
         }else{
             if(req.method === 'GET'){
                 const {filtro} = req.query;
@@ -23,6 +23,7 @@ const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse<Respo
                 const usuariosEncontrados = await UsuarioModel.find({
                     nome : {$regex : filtro, $options : 'i'}
                 });
+                usuariosEncontrados.forEach(e => e.senha = null);
                 return res.status(200).json(usuariosEncontrados);
             }
         } 
